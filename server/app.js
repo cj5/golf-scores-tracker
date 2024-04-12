@@ -1,8 +1,8 @@
 import express from 'express';
-import serverless from 'serverless-http';
+// import serverless from 'serverless-http';
 import puppeteer from 'puppeteer';
 const app = express();
-const router = express.Router();
+// const router = express.Router();
 const port = 8080;
 
 const mins = 1;
@@ -190,7 +190,7 @@ async function getScores() {
           y.score = 0;
         }
 
-        if (y.score > prevHighScore) {
+        if (y.score > stats[i][highScoreIndex].score) {
           highScoreIndex = j;
         }
         prevHighScore = y.score;
@@ -291,10 +291,22 @@ async function getScores() {
     console.log('———————————————');
     console.log('ROUND SCORES:');
 
+    // function logScores(prevScore, prevIndex, item, i) {
+    //   let rank = i + 1;
+    //   if (prevScore === item.score) {
+    //     rank = prevIndex + 1;
+    //   } else {
+    //     prevIndex = i;
+    //   }
+    //   prevScore = item.score;
+    //   console.log(`(${rank}) ${item.name}:`, item.score);
+    // }
+
     roundTotals.forEach((item, i) => {
-      let rank = i+1;
+      // logScores(previousRoundScore, previousRoundIndex, item, i);
+      let rank = i + 1;
       if (previousRoundScore === item.score) {
-        rank = previousRoundIndex+1;
+        rank = previousRoundIndex + 1;
       } else {
         previousRoundIndex = i;
       }
@@ -306,9 +318,10 @@ async function getScores() {
     console.log('OVERALL SCORES:');
 
     grandTotals.forEach((item, i) => {
-      let rank = i+1;
+      // logScores(previousOverallScore, previousOverallIndex, item, i);
+      let rank = i + 1;
       if (previousOverallScore === item.score) {
-        rank = previousOverallIndex+1;
+        rank = previousOverallIndex + 1;
       } else {
         previousOverallIndex = i;
       }
@@ -319,20 +332,25 @@ async function getScores() {
     console.log('———————————————\n\n');
 
     // router.get('/stats', async (req, res) => {
-    app.get('/stats', async (req, res) => {
-      await res.send(stats);
-    });
+    // app.get('/stats', async (req, res) => {
+    //   await res.send(stats);
+    // });
 
     await browser.close();
 
   } catch (err) {
-    console.log(err);
+    error.log(err);
     process.exit();
   }
 };
 // })();
 
 // app.use('/.netlify/functions/app', router);
+
+
+app.get('/stats', (req, res) => {
+  res.send('stats');
+})
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
