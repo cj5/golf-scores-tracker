@@ -1,0 +1,28 @@
+{
+  "name": "golf-scores-tracker",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "serve": "nodemon server/app.js",
+    "netlify-start": "./node_modules/.bin/netlify-lambda serve server",
+    "netlify-build": "./node_modules/.bin/netlify-lambda build server",
+    "build": "vite build",
+    "preview": "vite preview",
+    "proxy": "http://localhost:8080"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "express": "^4.19.2",
+    "puppeteer": "^22.6.4",
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "netlify-lambda": "^2.0.16",
+    "nodemon": "^3.1.0",
+    "serverless-http": "^3.2.0",
+    "vite": "^5.2.0"
+  }
+}
