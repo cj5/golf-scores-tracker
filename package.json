@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite",
     "serve": "nodemon server/app.js",
+    "start": "node server/app.js",
     "netlify-start": "./node_modules/.bin/netlify-lambda serve server",
     "netlify-build": "./node_modules/.bin/netlify-lambda build server",
     "build": "vite build",

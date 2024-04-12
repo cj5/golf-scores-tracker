@@ -196,10 +196,12 @@ async function getScores() {
         prevHighScore = y.score;
         console.log('highScoreIndex:', highScoreIndex, 'prevHighScore:', prevHighScore);
       });
+      // Remove high score
       stats[i].splice(highScoreIndex, 1);
+      sortLowToHigh(x);
     });
 
-    console.log('stats — high score removed:', stats);
+    // console.log('stats — high score removed:', stats);
 
     stats.forEach((x, i) => {
       x.forEach((y, j) => {
@@ -280,6 +282,14 @@ async function getScores() {
       },
     ];
 
+    console.log('\n');
+    console.log('Casey:', stats[0]);
+    console.log('John:', stats[1]);
+    console.log('Chris:', stats[2]);
+    console.log('Max:', stats[3]);
+    console.log('Alex:', stats[4]);
+    console.log('\n');
+
     sortLowToHigh(roundTotals);
     sortLowToHigh(grandTotals);
 
@@ -330,6 +340,13 @@ async function getScores() {
     });
 
     console.log('———————————————\n\n');
+
+
+    // console.log('Casey:', stats[0]);
+    // console.log('John:', stats[1]);
+    // console.log('Chris:', stats[2]);
+    // console.log('Max:', stats[3]);
+    // console.log('Alex', stats[4]);
 
     // router.get('/stats', async (req, res) => {
     // app.get('/stats', async (req, res) => {
