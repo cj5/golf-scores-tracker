@@ -9,10 +9,10 @@ let intervalCount = 0;
 
 let stats = [];
 
-getScores();
+getScores(stats);
 
-setInterval(() => {
-  getScores();
+setInterval((stats) => {
+  getScores(stats);
 
   intervalCount++;
   console.log('intervalCount:', intervalCount);
@@ -376,6 +376,9 @@ async function getScores() {
     // app.get('/', async (req, res) => {
     //   await res.send('hello?');
     // });
+    app.get('/', (req, res) => {
+      res.send('Golf scores tracker')
+    })
     app.get('/stats', (req, res) => {
       res.send(stats);
     });
@@ -390,7 +393,7 @@ async function getScores() {
 // })();
 
 // app.get('/', (req, res) => {
-//   res.send('Hello World!')
+//   res.send('Golf scores tracker')
 // })
 
 app.listen(port, () => {
