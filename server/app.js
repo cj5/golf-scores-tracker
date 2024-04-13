@@ -1,7 +1,7 @@
 import express from 'express';
 import puppeteer from 'puppeteer';
 const app = express();
-const port = 5050;
+const port = process.env.PORT || 5050;
 
 const mins = 1;
 const interval = mins * 60 * 1000;
