@@ -1,13 +1,13 @@
 import express from 'express';
-// import serverless from 'serverless-http';
 import puppeteer from 'puppeteer';
 const app = express();
-// const router = express.Router();
-const port = 8080;
+const port = 5050;
 
 const mins = 1;
 const interval = mins * 60 * 1000;
 let intervalCount = 0;
+
+let stats = [];
 
 getScores();
 
@@ -16,7 +16,7 @@ setInterval(() => {
 
   intervalCount++;
   console.log('intervalCount:', intervalCount);
-}, interval)
+}, interval);
 
 async function getScores() {
   try {
@@ -27,30 +27,45 @@ async function getScores() {
     page.setDefaultNavigationTimeout(0);
 
     // Navigate the page to a URL
-    // await page.goto('https://developer.chrome.com/');
-    // await page.goto('https://www.masters.com/en_US/scores/index.html');
     await page.goto('https://www.cbssports.com/golf/leaderboard/pga-tour/');
-
-    // const scoringTypeBtn = '#leaderboardHeader .select-menu-primary button';
-    // await page.waitForSelector(scoringTypeBtn);
-    // await page.click(scoringTypeBtn);
-
 
     const scores = await page.$$eval(
       '.TableBase-bodyTd.TableBase-bodyTd--number.GolfLeaderboardTable-bodyTd--today',
       els => els.map((el) => el.innerText)
     )
-    // const scores = await page.$$eval(
-    //   '.TableBase-bodyTd.TableBase-bodyTd--number.GolfLeaderboardTable-bodyTd--round1',
+
+    // let scores_1 = await page.$$eval(
+    //   '.TableBase-bodyTr.GolfLeaderboard-bodyTr.GolfLeaderboard-toggleScorecard--open .TableBase-bodyTd.TableBase-bodyTd--number',
     //   els => els.map((el) => el.innerText)
     // )
+
+    // console.log(scores_1);
+
+    // let scores = [];
+    // let startCount = 0;
+    // let intervalCount = 0;
+    // scores_1.forEach((item, i) => {
+    //   if (startCount === 2) {
+    //     scores.push(item);
+    //   }
+    //   if (startCount >= 2) {
+    //     intervalCount++;
+    //   }
+    //   if (intervalCount === 7) {
+    //     scores.push(item);
+    //     intervalCount = 1;
+    //   }
+    //   startCount++;
+    // });
 
     const players = await page.$$eval(
       '.TableBase-bodyTd.GolfLeaderboardTable-bodyTd--playerName .CellPlayerName--long a',
       els => els.map((el) => el.innerText)
     )
 
-    let stats = [];
+    // let stats = [];
+
+    // console.log('scores', scores);
 
     players.forEach(item => {
       stats.push({player: item});
@@ -70,41 +85,43 @@ async function getScores() {
     stats.filter((item, i) => {
       // CASEY
       if (item.player === 'Scottie Scheffler') caseyStats.push(stats[i]);
-      if (item.player === 'Wyndham Clark') caseyStats.push(stats[i]);
       if (item.player === 'Bryson DeChambeau') caseyStats.push(stats[i]);
       if (item.player === 'Tom Kim') caseyStats.push(stats[i]);
-      if (item.player === 'Sam Burns') caseyStats.push(stats[i]);
-      // if (item.player === 'Collin Morikawa') caseyStats.push(stats[i]);
+      if (item.player === 'Collin Morikawa') caseyStats.push(stats[i]);
+      // if (item.player === 'Wyndham Clark') caseyStats.push(stats[i]);
+      // if (item.player === 'Sam Burns') caseyStats.push(stats[i]);
 
       // JOHN
       if (item.player === 'Rory McIlroy') johnStats.push(stats[i]);
-      if (item.player === 'Jordan Spieth') johnStats.push(stats[i]);
       if (item.player === 'Keegan Bradley') johnStats.push(stats[i]);
       if (item.player === 'Tony Finau') johnStats.push(stats[i]);
       if (item.player === 'Matt Fitzpatrick') johnStats.push(stats[i]);
+      if (item.player === 'Rickie Fowler') johnStats.push(stats[i]);
+      // if (item.player === 'Jordan Spieth') johnStats.push(stats[i]);
 
-      // CHRIS
-      if (item.player === 'Viktor Hovland') chrisStats.push(stats[i]);
+      // CJ
       if (item.player === 'Max Homa') chrisStats.push(stats[i]);
       if (item.player === 'Ludvig Aberg') chrisStats.push(stats[i]);
       if (item.player === 'Tommy Fleetwood') chrisStats.push(stats[i]);
       if (item.player === 'Patrick Cantlay') chrisStats.push(stats[i]);
+      if (item.player === 'Will Zalatoris') chrisStats.push(stats[i]);
+      // if (item.player === 'Viktor Hovland') chrisStats.push(stats[i]);
 
       // MAX
       if (item.player === 'Brooks Koepka') maxStats.push(stats[i]);
       if (item.player === 'Xander Schauffele') maxStats.push(stats[i]);
       if (item.player === 'Cameron Smith') maxStats.push(stats[i]);
       if (item.player === 'Jason Day') maxStats.push(stats[i]);
-      if (item.player === 'Justin Thomas') maxStats.push(stats[i]);
+      // if (item.player === 'Justin Thomas') maxStats.push(stats[i]);
       // if (item.player === 'Adam Scott') maxStats.push(stats[i]);
 
       // ALEX
-      if (item.player === 'Jon Rahm') alexStats.push(stats[i]);
       if (item.player === 'Tiger Woods') alexStats.push(stats[i]);
-      if (item.player === 'Nick Dunlap') alexStats.push(stats[i]);
+      if (item.player === 'Jon Rahm') alexStats.push(stats[i]);
       if (item.player === 'Joaquin Niemann') alexStats.push(stats[i]);
-      if (item.player === 'Dustin Johnson') alexStats.push(stats[i]);
-      // if (item.player === 'Hideki Matsuyama') alexStats.push(stats[i]);
+      if (item.player === 'Hideki Matsuyama') alexStats.push(stats[i]);
+      // if (item.player === 'Nick Dunlap') alexStats.push(stats[i]);
+      // if (item.player === 'Dustin Johnson') alexStats.push(stats[i]);
     });
 
     const totalScores = [
@@ -116,11 +133,11 @@ async function getScores() {
         alex: 8,
       },
       { // Round 2
-        casey: 0,
-        john: 0,
-        chris: 0,
-        max: 0,
-        alex: 0,
+        casey: 8,
+        john: 7,
+        chris: -2,
+        max: 2,
+        alex: 12,
       },
       { // Round 3
         casey: 0,
@@ -146,7 +163,7 @@ async function getScores() {
       alexStats,
     ];
 
-    console.log(stats);
+    // console.log(stats);
 
     // console.log('caseyStats:', caseyStats);
     // console.log('johnStats:', johnStats);
@@ -178,7 +195,7 @@ async function getScores() {
       let highScoreIndex = 0;
       let prevHighScore = 0;
       x.forEach((y, j) => {
-        console.log('y', y, j);
+        console.log(y, j);
         if (y.score > 40) {
           // console.log(1, y.player, y.score);
           y.score = y.score - 72;
@@ -197,7 +214,9 @@ async function getScores() {
         console.log('highScoreIndex:', highScoreIndex, 'prevHighScore:', prevHighScore);
       });
       // Remove high score
-      stats[i].splice(highScoreIndex, 1);
+      if (stats[i].length > 4) {
+        stats[i].splice(highScoreIndex, 1);
+      }
       sortLowToHigh(x);
     });
 
@@ -246,7 +265,7 @@ async function getScores() {
         score: johnTotal_rd,
       },
       {
-        name: 'Chris',
+        name: 'CJ',
         score: chrisTotal_rd,
       },
       {
@@ -269,7 +288,7 @@ async function getScores() {
         score: johnTotal,
       },
       {
-        name: 'Chris',
+        name: 'CJ',
         score: chrisTotal,
       },
       {
@@ -283,10 +302,12 @@ async function getScores() {
     ];
 
     console.log('\n');
-    console.log('Casey:', stats[0]);
-    console.log('John:', stats[1]);
-    console.log('Chris:', stats[2]);
+    console.log('ROUND 3:');
+    console.log('-------');
+    console.log('CJ:', stats[2]);
     console.log('Max:', stats[3]);
+    console.log('John:', stats[1]);
+    console.log('Casey:', stats[0]);
     console.log('Alex:', stats[4]);
     console.log('\n');
 
@@ -299,7 +320,7 @@ async function getScores() {
     let previousOverallIndex = 0;
 
     console.log('———————————————');
-    console.log('ROUND SCORES:');
+    console.log('ROUND 3 SCORES:');
 
     // function logScores(prevScore, prevIndex, item, i) {
     //   let rank = i + 1;
@@ -349,28 +370,29 @@ async function getScores() {
     // console.log('Alex', stats[4]);
 
     // router.get('/stats', async (req, res) => {
-    // app.get('/stats', async (req, res) => {
-    //   await res.send(stats);
+
+    // console.log('stats:', stats);
+
+    // app.get('/', async (req, res) => {
+    //   await res.send('hello?');
     // });
+    app.get('/stats', (req, res) => {
+      res.send(stats);
+    });
 
     await browser.close();
 
   } catch (err) {
-    error.log(err);
+    console.error(err);
     process.exit();
   }
 };
 // })();
 
-// app.use('/.netlify/functions/app', router);
-
-
-app.get('/stats', (req, res) => {
-  res.send('stats');
-})
+// app.get('/', (req, res) => {
+//   res.send('Hello World!')
+// })
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
-
-// module.exports.handler = serverless(app);
