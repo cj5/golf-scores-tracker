@@ -7,12 +7,10 @@ const mins = 1;
 const interval = mins * 60 * 1000;
 let intervalCount = 0;
 
-let stats = [];
+getScores();
 
-getScores(stats);
-
-setInterval((stats) => {
-  getScores(stats);
+setInterval(() => {
+  getScores();
 
   intervalCount++;
   console.log('intervalCount:', intervalCount);
@@ -63,7 +61,7 @@ async function getScores() {
       els => els.map((el) => el.innerText)
     )
 
-    // let stats = [];
+    let stats = [];
 
     // console.log('scores', scores);
 
