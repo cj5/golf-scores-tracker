@@ -1,11 +1,19 @@
 import express from 'express';
 import puppeteer from 'puppeteer';
+import cors from 'cors';
 const app = express();
-const port = process.env.PORT || 5050;
+const port = process.env.PORT || 8888;
+
+app.use(cors());
 
 const mins = 1;
 const interval = mins * 60 * 1000;
 let intervalCount = 0;
+
+let stats = [];
+let roundScores = [];
+let overallScores = [];
+let isInPlay = false;
 
 getScores();
 
@@ -31,6 +39,9 @@ async function getScores() {
       '.TableBase-bodyTd.TableBase-bodyTd--number.GolfLeaderboardTable-bodyTd--today',
       els => els.map((el) => el.innerText)
     )
+
+    isInPlay = scores.length ? true : false;
+    console.log('isInPlay:', isInPlay);
 
     // let scores_1 = await page.$$eval(
     //   '.TableBase-bodyTr.GolfLeaderboard-bodyTr.GolfLeaderboard-toggleScorecard--open .TableBase-bodyTd.TableBase-bodyTd--number',
@@ -61,12 +72,13 @@ async function getScores() {
       els => els.map((el) => el.innerText)
     )
 
-    let stats = [];
+    // let stats = [];
 
-    // console.log('scores', scores);
+    // console.log('scores:', scores);
+    // console.log('players:', players);
 
     players.forEach(item => {
-      stats.push({player: item});
+      stats.push({ player: item });
     });
     scores.forEach((item, i) => {
       stats[i].score = item;
@@ -74,78 +86,65 @@ async function getScores() {
 
     // console.log('STATS:', stats);
 
-    let caseyStats = [];
     let johnStats = [];
     let chrisStats = [];
     let maxStats = [];
     let alexStats = [];
 
     stats.filter((item, i) => {
-      // CASEY
-      if (item.player === 'Scottie Scheffler') caseyStats.push(stats[i]);
-      if (item.player === 'Bryson DeChambeau') caseyStats.push(stats[i]);
-      if (item.player === 'Tom Kim') caseyStats.push(stats[i]);
-      if (item.player === 'Collin Morikawa') caseyStats.push(stats[i]);
-      // if (item.player === 'Wyndham Clark') caseyStats.push(stats[i]);
-      // if (item.player === 'Sam Burns') caseyStats.push(stats[i]);
-
       // JOHN
-      if (item.player === 'Rory McIlroy') johnStats.push(stats[i]);
-      if (item.player === 'Keegan Bradley') johnStats.push(stats[i]);
-      if (item.player === 'Tony Finau') johnStats.push(stats[i]);
-      if (item.player === 'Matt Fitzpatrick') johnStats.push(stats[i]);
-      if (item.player === 'Rickie Fowler') johnStats.push(stats[i]);
-      // if (item.player === 'Jordan Spieth') johnStats.push(stats[i]);
-
-      // CJ
-      if (item.player === 'Max Homa') chrisStats.push(stats[i]);
-      if (item.player === 'Ludvig Aberg') chrisStats.push(stats[i]);
-      if (item.player === 'Tommy Fleetwood') chrisStats.push(stats[i]);
-      if (item.player === 'Patrick Cantlay') chrisStats.push(stats[i]);
-      if (item.player === 'Will Zalatoris') chrisStats.push(stats[i]);
-      // if (item.player === 'Viktor Hovland') chrisStats.push(stats[i]);
-
-      // MAX
-      if (item.player === 'Brooks Koepka') maxStats.push(stats[i]);
-      if (item.player === 'Xander Schauffele') maxStats.push(stats[i]);
-      if (item.player === 'Cameron Smith') maxStats.push(stats[i]);
-      if (item.player === 'Jason Day') maxStats.push(stats[i]);
-      // if (item.player === 'Justin Thomas') maxStats.push(stats[i]);
-      // if (item.player === 'Adam Scott') maxStats.push(stats[i]);
+      if (item.player === 'Scottie Scheffler') johnStats.push(stats[i]);
+      if (item.player === 'Justin Rose') johnStats.push(stats[i]);
+      if (item.player === 'Cameron Young') johnStats.push(stats[i]);
+      if (item.player === 'Akshay Bhatia') johnStats.push(stats[i]);
+      // if (item.player === 'Justin Thomas') johnStats.push(stats[i]);
+      if (item.player === 'Patrick Reed') johnStats.push(stats[i]);
 
       // ALEX
-      if (item.player === 'Tiger Woods') alexStats.push(stats[i]);
       if (item.player === 'Jon Rahm') alexStats.push(stats[i]);
-      if (item.player === 'Joaquin Niemann') alexStats.push(stats[i]);
-      if (item.player === 'Hideki Matsuyama') alexStats.push(stats[i]);
-      // if (item.player === 'Nick Dunlap') alexStats.push(stats[i]);
-      // if (item.player === 'Dustin Johnson') alexStats.push(stats[i]);
+      if (item.player === 'Tommy Fleetwood') alexStats.push(stats[i]);
+      if (item.player === 'Matt Fitzpatrick') alexStats.push(stats[i]);
+      if (item.player === 'Jordan Spieth') alexStats.push(stats[i]);
+      // if (item.player === 'Min Woo Lee') alexStats.push(stats[i]);
+      if (item.player === 'Robert MacIntyre') alexStats.push(stats[i]);
+
+      // MAX
+      if (item.player === 'Bryson DeChambeau') maxStats.push(stats[i]);
+      if (item.player === 'Xander Schauffele') maxStats.push(stats[i]);
+      if (item.player === 'Brooks Koepka') maxStats.push(stats[i]);
+      if (item.player === 'Collin Morikawa') maxStats.push(stats[i]);
+      if (item.player === 'Adam Scott') maxStats.push(stats[i]);
+      // if (item.player === 'Gary Woodland') maxStats.push(stats[i]);
+
+      // CJ
+      if (item.player === 'Rory McIlroy') chrisStats.push(stats[i]);
+      if (item.player === 'Ludvig Åberg') chrisStats.push(stats[i]);
+      if (item.player === 'Hideki Matsuyama') chrisStats.push(stats[i]);
+      if (item.player === 'Viktor Hovland') chrisStats.push(stats[i]);
+      // if (item.player === 'Chris Gotterup') chrisStats.push(stats[i]);
+      if (item.player === 'J.J. Spaun') chrisStats.push(stats[i]);
     });
 
     const totalScores = [
       { // Round 1
-        casey: -6,
-        john: 3,
-        chris: -7,
-        max: 3,
-        alex: 8,
+        john: -6,
+        chris: -1,
+        max: 0,
+        alex: 7,
       },
       { // Round 2
-        casey: 8,
-        john: 7,
-        chris: -2,
-        max: 2,
-        alex: 12,
+        john: 0,
+        chris: 0,
+        max: 0,
+        alex: 0,
       },
       { // Round 3
-        casey: 0,
         john: 0,
         chris: 0,
         max: 0,
         alex: 0,
       },
       { // Round 4
-        casey: 0,
         john: 0,
         chris: 0,
         max: 0,
@@ -154,28 +153,24 @@ async function getScores() {
     ];
 
     stats = [
-      caseyStats,
       johnStats,
-      chrisStats,
-      maxStats,
       alexStats,
+      maxStats,
+      chrisStats,
     ];
 
     // console.log(stats);
 
-    // console.log('caseyStats:', caseyStats);
     // console.log('johnStats:', johnStats);
     // console.log('chrisStats:', chrisStats);
     // console.log('maxStats:', maxStats);
     // console.log('alexStats:', alexStats);
 
-    let caseyTotal = 0;
     let johnTotal = 0;
     let chrisTotal = 0;
     let maxTotal = 0;
     let alexTotal = 0;
 
-    let caseyTotal_rd = 0;
     let johnTotal_rd = 0;
     let chrisTotal_rd = 0;
     let maxTotal_rd = 0;
@@ -184,12 +179,21 @@ async function getScores() {
     function isNumeric(str) {
       if (typeof str != "string") return false // we only process strings!
       return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
-            !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+        !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
     }
 
     stats.forEach((x, i) => {
       // console.log('x', x, i);
       console.log('———————————');
+      if (i === 0) {
+        console.log('JOHN:');
+      } else if (i === 1) {
+        console.log('ALEX:');
+      } else if (i === 2) {
+        console.log('MAX:');
+      } else if (i === 3) {
+        console.log('CHRIS:');
+      }
       let highScoreIndex = 0;
       let prevHighScore = 0;
       x.forEach((y, j) => {
@@ -220,34 +224,33 @@ async function getScores() {
 
     // console.log('stats — high score removed:', stats);
 
+    const roundIndex = 0; // round 1 = 0, round 2 = 1, etc.
+
     stats.forEach((x, i) => {
       x.forEach((y, j) => {
         if (i === 0) {
-          caseyTotal_rd += y.score;
-          totalScores[1].casey += y.score;
-        } else if (i === 1) {
           johnTotal_rd += y.score;
-          totalScores[1].john += y.score;
-        } else if (i === 2) {
-          chrisTotal_rd += y.score;
-          totalScores[1].chris += y.score;
-        } else if (i === 3) {
-          maxTotal_rd += y.score;
-          totalScores[1].max += y.score;
-        } else if (i === 4) {
+          totalScores[roundIndex].john += y.score;
+        } else if (i === 1) {
           alexTotal_rd += y.score;
-          totalScores[1].alex += y.score;
+          totalScores[roundIndex].alex += y.score;
+        } else if (i === 2) {
+          maxTotal_rd += y.score;
+          totalScores[roundIndex].max += y.score;
+        } else if (i === 3) {
+          chrisTotal_rd += y.score;
+          totalScores[roundIndex].chris += y.score;
         }
       });
     });
 
     totalScores.forEach((item, i) => {
-      caseyTotal += item.casey;
       johnTotal += item.john;
-      chrisTotal += item.chris;
-      maxTotal += item.max;
       alexTotal += item.alex;
+      maxTotal += item.max;
+      chrisTotal += item.chris;
     });
+
 
     function sortLowToHigh(array) {
       return array.sort((a, b) => a.score - b.score);
@@ -255,58 +258,49 @@ async function getScores() {
 
     const roundTotals = [
       {
-        name: 'Casey',
-        score: caseyTotal_rd,
-      },
-      {
         name: 'John',
         score: johnTotal_rd,
       },
       {
-        name: 'CJ',
-        score: chrisTotal_rd,
+        name: 'Alex',
+        score: alexTotal_rd,
       },
       {
         name: 'Max',
         score: maxTotal_rd,
       },
       {
-        name: 'Alex',
-        score: alexTotal_rd,
+        name: 'CJ',
+        score: chrisTotal_rd,
       },
     ];
 
     const grandTotals = [
       {
-        name: 'Casey',
-        score: caseyTotal,
-      },
-      {
         name: 'John',
         score: johnTotal,
       },
       {
-        name: 'CJ',
-        score: chrisTotal,
+        name: 'Alex',
+        score: alexTotal,
       },
       {
         name: 'Max',
         score: maxTotal,
       },
       {
-        name: 'Alex',
-        score: alexTotal,
+        name: 'CJ',
+        score: chrisTotal,
       },
     ];
 
     console.log('\n');
-    console.log('ROUND 3:');
-    console.log('-------');
-    console.log('CJ:', stats[2]);
-    console.log('Max:', stats[3]);
-    console.log('John:', stats[1]);
-    console.log('Casey:', stats[0]);
-    console.log('Alex:', stats[4]);
+    console.log('ROUND 1:');
+    console.log('———————');
+    console.log('John:', stats[0]);
+    console.log('Alex:', stats[1]);
+    console.log('Max:', stats[2]);
+    console.log('CJ:', stats[3]);
     console.log('\n');
 
     sortLowToHigh(roundTotals);
@@ -318,7 +312,7 @@ async function getScores() {
     let previousOverallIndex = 0;
 
     console.log('———————————————');
-    console.log('ROUND 3 SCORES:');
+    console.log('ROUND 1 SCORES:');
 
     // function logScores(prevScore, prevIndex, item, i) {
     //   let rank = i + 1;
@@ -331,6 +325,9 @@ async function getScores() {
     //   console.log(`(${rank}) ${item.name}:`, item.score);
     // }
 
+    roundScores = [];
+    overallScores = [];
+
     roundTotals.forEach((item, i) => {
       // logScores(previousRoundScore, previousRoundIndex, item, i);
       let rank = i + 1;
@@ -341,6 +338,12 @@ async function getScores() {
       }
       previousRoundScore = item.score;
       console.log(`(${rank}) ${item.name}:`, item.score);
+      roundScores.push({
+        rank,
+        name: item.name,
+        score: item.score,
+        class: item.score < 0 ? 'under-par' : '',
+      });
     });
 
     console.log('———————————————');
@@ -356,6 +359,12 @@ async function getScores() {
       }
       previousOverallScore = item.score;
       console.log(`(${rank}) ${item.name}:`, item.score);
+      overallScores.push({
+        rank,
+        name: item.name,
+        score: item.score,
+        class: item.score < 0 ? 'under-par' : '',
+      })
     });
 
     console.log('———————————————\n\n');
@@ -374,12 +383,12 @@ async function getScores() {
     // app.get('/', async (req, res) => {
     //   await res.send('hello?');
     // });
-    app.get('/', (req, res) => {
-      res.send('Golf scores tracker')
-    })
-    app.get('/stats', (req, res) => {
-      res.send(stats);
-    });
+    // app.get('/', (req, res) => {
+    //   res.send('Golf scores tracker')
+    // })
+    // app.get('/stats', (req, res) => {
+    //   res.send(stats);
+    // });
 
     await browser.close();
 
@@ -392,8 +401,16 @@ async function getScores() {
 
 // app.get('/', (req, res) => {
 //   res.send('Golf scores tracker')
-// })
+// });
+
+app.get('/stats', (req, res) => {
+  res.send(stats);
+});
+
+app.get('/scores', (req, res) => {
+  res.send([roundScores, overallScores, isInPlay]);
+});
 
 app.listen(port, () => {
-  console.log(`App listening on port ${port}`);
+  console.log(`App listening on port ${port}\nhttp://localhost:${port}`);
 });
