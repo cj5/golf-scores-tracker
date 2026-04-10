@@ -5,7 +5,7 @@
 
     <h1 class="title">Scores Tracker</h1>
 
-    <h2 v-if="isLoading">Loading...</h2>
+    <p v-if="isLoading" class="loading">Loading...</p>
 
     <div v-if="error">
       <h2>⚠️ Error</h2>
@@ -100,8 +100,8 @@ const alexStats = computed(() => stats.value[1]);
 const maxStats = computed(() => stats.value[2]);
 const chrisStats = computed(() => stats.value[3]);
 
-// const isInPlay = computed(() => data[3]);
-const isInPlay = computed(() => true);
+const isInPlay = computed(() => data[3]);
+// const isInPlay = computed(() => true);
 
 const round = ref(null);
 
@@ -191,8 +191,9 @@ $color-masters-green: #056948;
   margin-bottom: 60px;
 }
 .section-heading {
+  font-family: 'Work Sans';
+  font-weight: 700;
   color: #555;
-  font-weight: 500;
 }
 .subheading {
   font-size: 24px;
@@ -203,7 +204,7 @@ ul {
   list-style: none;
 }
 li {
-  font-size: 30px;
+  font-size: 26px;
 }
 .rank {
   display: flex;
@@ -224,6 +225,9 @@ li {
   right: 20px;
   font-size: 12px;
   margin: 0;
+}
+.loading {
+  font-size: 20px;
 }
 .scores-wrap {
   display: flex;
@@ -254,9 +258,13 @@ li {
   margin-left: 80px;
   padding-left: 30px;
   border-left: 1px solid gray;
+  .section-heading {
+    font-size: 18px;
+  }
   .subheading {
     font-size: 1em;
     font-style: italic;
+    font-weight: 600;
     color: #555;
     margin-bottom: 9px;
     padding-bottom: 3px;
