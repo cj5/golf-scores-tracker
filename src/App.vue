@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Golf Scores Tracker</h1>
+    <h1 class="title">Golf Scores Tracker</h1>
     <h2 v-if="isLoading">Loading...</h2>
     <div v-if="error">
       <h2>⚠️ Error</h2>
@@ -92,6 +92,11 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.title {
+  font-size: 2.5em;
+  font-weight: 300;
+  margin-bottom: 40px;
+}
 ul {
   margin-right: 0;
   padding-left: 0;
