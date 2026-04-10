@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "serve": "nodemon server/app.js",
-        "start": "rm -rf ~/.cache/puppeteer/chrome && npx puppeteer browsers install chrome && node server/app.js",
+        "start": "npx puppeteer browsers install chrome && forever -c node server/app.js",
         "dev": "vite",
         "build": "vite build"
     },
