@@ -28,7 +28,9 @@ async function getScores() {
   try {
 
     // Launch the browser and open a new blank page
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox'],
+    });
     const page = await browser.newPage();
     page.setDefaultNavigationTimeout(0);
 
