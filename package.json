@@ -12,6 +12,7 @@
     "dependencies": {
         "cors": "^2.8.6",
         "express": "^4.19.2",
+        "forever": "^4.0.3",
         "puppeteer": "^22.6.4",
         "vue": "^3.4.21"
     },
