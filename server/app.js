@@ -29,7 +29,10 @@ async function getScores() {
 
     // Launch the browser and open a new blank page
     const browser = await puppeteer.launch({
-      args: ['--no-sandbox'],
+      args: [
+        '--no-sandbox',
+        '--disable-features=FedCm',
+      ],
     });
     const page = await browser.newPage();
     page.setDefaultNavigationTimeout(0);
