@@ -2,9 +2,13 @@
   <div>
     <h1>Golf Scores Tracker</h1>
     <h2 v-if="isLoading">Loading...</h2>
+    <div v-if="error">
+      <h2>⚠️ Error</h2>
+      <p style="color: red;">{{ errorMsg }}</p>
+    </div>
     <div class="scores-wrap">
       <div v-if="scores" class="scores">
-        <!-- <template v-if="isInPlay"> -->
+        <template v-if="isInPlay">
           <h2>ROUND 1 SCORES:</h2>
           <ul>
             <li>({{ johnRound.rank }}) {{ johnRound.name }}: <span :class="`score ${johnRound.class}`">{{ johnRound.score }}</span></li>
@@ -13,6 +17,7 @@
             <li>({{ chrisRound.rank }}) {{ chrisRound.name }}: <span :class="`score ${chrisRound.class}`">{{ chrisRound.score }}</span></li>
           </ul>
           <p>————————————————</p>
+        </template>
         <h2>OVERALL SCORES:</h2>
         <ul>
           <li>({{ overallFirst.rank }}) {{ overallFirst.name }}: <span :class="`score ${overallFirst.class}`">{{ overallFirst.score }}</span></li>
@@ -33,6 +38,8 @@ import { ref, computed, onMounted } from 'vue';
 
 const data = ref(null);
 const isLoading = ref(true);
+const error = ref(false);
+const errorMsg = ref(null);
 
 const scores = computed(() => data.value);
 
@@ -70,8 +77,10 @@ async function getData() {
       }
     });
     console.log('Data:', data.value);
-  } catch (error) {
-    console.error('Fetch failed:', error)
+  } catch (err) {
+    console.error('Fetch failed:', err);
+    error.value = true;
+    errorMsg.value = err;
   } finally {
     isLoading.value = false;
   }

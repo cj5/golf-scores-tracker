@@ -13,6 +13,12 @@ app.use(cors({
   ]
 }));
 
+app.all('/*', function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
+
 const mins = 1;
 const interval = mins * 60 * 1000;
 let intervalCount = 0;
