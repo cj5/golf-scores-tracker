@@ -52,9 +52,8 @@ const isInPlay = computed(() => data[2]);
 
 async function getData() {
   try {
-    // const response = await fetch('http://golf-scores-tracker.chrisstack.co/stats');
-    // const response = await fetch('http://localhost:8888/stats');
-    const response = await fetch('http://localhost:8888/scores');
+    // const response = await fetch('http://localhost:8888/scores');
+    const response = await fetch('https://golf-scores-tracker-efba68d29894.herokuapp.com/scores');
     const result = await response.json();
     data.value = result;
     data.value.forEach((item, i) => {

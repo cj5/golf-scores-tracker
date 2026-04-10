@@ -6,7 +6,8 @@
     "scripts": {
         "serve": "nodemon server/app.js",
         "start": "npx puppeteer browsers install chrome && node server/app.js",
-        "dev": "vite"
+        "dev": "vite",
+        "build": "vite build"
     },
     "dependencies": {
         "express": "^4.19.2",

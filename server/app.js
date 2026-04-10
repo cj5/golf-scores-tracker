@@ -4,7 +4,14 @@ import cors from 'cors';
 const app = express();
 const port = process.env.PORT || 8888;
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: [
+    'http://golf-scores-tracker.chrisstack.co',
+    'https://golf-scores-tracker.chrisstack.co',
+    'http://localhost:8888',
+  ]
+}));
 
 const mins = 1;
 const interval = mins * 60 * 1000;
