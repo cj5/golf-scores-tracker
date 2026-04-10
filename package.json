@@ -12,8 +12,7 @@
     "dependencies": {
         "express": "^4.19.2",
         "puppeteer": "^22.6.4",
-        "vue": "^3.4.21",
-        "cors": "^2.8.6"
+        "vue": "^3.4.21"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^5.0.4",
