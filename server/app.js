@@ -117,8 +117,8 @@ async function getScores() {
       if (item.player === 'Scottie Scheffler') johnStats.push(stats[i]);
       if (item.player === 'Justin Rose') johnStats.push(stats[i]);
       if (item.player === 'Cameron Young') johnStats.push(stats[i]);
-      if (item.player === 'Akshay Bhatia') johnStats.push(stats[i]);
-      // if (item.player === 'Justin Thomas') johnStats.push(stats[i]);
+      // if (item.player === 'Akshay Bhatia') johnStats.push(stats[i]);
+      if (item.player === 'Justin Thomas') johnStats.push(stats[i]);
       if (item.player === 'Patrick Reed') johnStats.push(stats[i]);
 
       // ALEX
@@ -126,16 +126,16 @@ async function getScores() {
       if (item.player === 'Tommy Fleetwood') alexStats.push(stats[i]);
       if (item.player === 'Matt Fitzpatrick') alexStats.push(stats[i]);
       if (item.player === 'Jordan Spieth') alexStats.push(stats[i]);
-      // if (item.player === 'Min Woo Lee') alexStats.push(stats[i]);
-      if (item.player === 'Robert MacIntyre') alexStats.push(stats[i]);
+      if (item.player === 'Min Woo Lee') alexStats.push(stats[i]);
+      // if (item.player === 'Robert MacIntyre') alexStats.push(stats[i]);
 
       // MAX
       if (item.player === 'Bryson DeChambeau') maxStats.push(stats[i]);
       if (item.player === 'Xander Schauffele') maxStats.push(stats[i]);
       if (item.player === 'Brooks Koepka') maxStats.push(stats[i]);
-      if (item.player === 'Collin Morikawa') maxStats.push(stats[i]);
+      // if (item.player === 'Collin Morikawa') maxStats.push(stats[i]);
       if (item.player === 'Adam Scott') maxStats.push(stats[i]);
-      // if (item.player === 'Gary Woodland') maxStats.push(stats[i]);
+      if (item.player === 'Gary Woodland') maxStats.push(stats[i]);
 
       // CJ
       if (item.player === 'Rory McIlroy') chrisStats.push(stats[i]);
@@ -245,7 +245,7 @@ async function getScores() {
 
     // console.log('stats — high score removed:', stats);
 
-    const roundIndex = 0; // round 1 = 0, round 2 = 1, etc.
+    const roundIndex = 1; // round 1 = 0, round 2 = 1, etc.
 
     stats.forEach((x, i) => {
       x.forEach((y, j) => {
@@ -316,7 +316,7 @@ async function getScores() {
     ];
 
     console.log('\n');
-    console.log('ROUND 1:');
+    console.log('ROUND 2:');
     console.log('———————');
     console.log('John:', stats[0]);
     console.log('Alex:', stats[1]);
@@ -333,7 +333,7 @@ async function getScores() {
     let previousOverallIndex = 0;
 
     console.log('———————————————');
-    console.log('ROUND 1 SCORES:');
+    console.log('ROUND 2 SCORES:');
 
     // function logScores(prevScore, prevIndex, item, i) {
     //   let rank = i + 1;

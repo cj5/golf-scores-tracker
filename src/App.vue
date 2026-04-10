@@ -7,8 +7,8 @@
 
     <p v-if="isLoading" class="loading">Loading...</p>
 
-    <div v-if="error">
-      <h2>⚠️ Error</h2>
+    <div v-if="error" class="error-wrap">
+      <h2 class="heading mb-0">⚠️ Error</h2>
       <p class="error">{{ errorMsg }}</p>
     </div>
 
@@ -100,7 +100,7 @@ const alexStats = computed(() => stats.value[1]);
 const maxStats = computed(() => stats.value[2]);
 const chrisStats = computed(() => stats.value[3]);
 
-const isInPlay = computed(() => data[3]);
+const isInPlay = computed(() => data.value[3]);
 // const isInPlay = computed(() => true);
 
 const round = ref(null);
@@ -286,8 +286,12 @@ li {
     font-size: 16px;
   }
 }
+.error-wrap {
+  margin-bottom: 50px;
+}
 .error {
   color: $color-red;
+  margin: 0;
 }
 
 @media (max-width: 670px) {

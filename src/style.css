@@ -25,10 +25,15 @@ h3,
 h4,
 h5 {
   margin: 0 0 20px;
+  font-weight: 600;
 }
 
 .under-par {
   color: rgb(186, 12, 47);
+}
+
+.mb-0 {
+  margin-bottom: 0;
 }
 
 a {
