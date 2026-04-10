@@ -20,10 +20,10 @@
           <template v-if="isInPlay">
             <h2 class="section-heading">Round {{ round }} Scores:</h2>
             <ul>
-              <li><span class="rank"><span>{{ johnRound.rank }}</span></span> {{ johnRound.name }}:&nbsp;<span :class="`score ${johnRound.class}`">{{ johnRound.score }}</span></li>
-              <li><span class="rank"><span>{{ alexRound.rank }}</span></span> {{ alexRound.name }}:&nbsp;<span :class="`score ${alexRound.class}`">{{ alexRound.score }}</span></li>
-              <li><span class="rank"><span>{{ maxRound.rank }}</span></span> {{ maxRound.name }}:&nbsp;<span :class="`score ${maxRound.class}`">{{ maxRound.score }}</span></li>
-              <li><span class="rank"><span>{{ chrisRound.rank }}</span></span> {{ chrisRound.name }}:&nbsp;<span :class="`score ${chrisRound.class}`">{{ chrisRound.score }}</span></li>
+              <li><span class="rank"><span>{{ roundFirst.rank }}</span></span> {{ roundFirst.name }}:&nbsp;<span :class="`score ${roundFirst.class}`">{{ roundFirst.score }}</span></li>
+              <li><span class="rank"><span>{{ roundSecond.rank }}</span></span> {{ roundSecond.name }}:&nbsp;<span :class="`score ${roundSecond.class}`">{{ roundSecond.score }}</span></li>
+              <li><span class="rank"><span>{{ roundThird.rank }}</span></span> {{ roundThird.name }}:&nbsp;<span :class="`score ${roundThird.class}`">{{ roundThird.score }}</span></li>
+              <li><span class="rank"><span>{{ roundFourth.rank }}</span></span> {{ roundFourth.name }}:&nbsp;<span :class="`score ${roundFourth.class}`">{{ roundFourth.score }}</span></li>
             </ul>
             <hr>
           </template>
@@ -66,6 +66,7 @@
     </div>
   </div>
   <p class="last-updated" v-if="lastUpdated"><span class="italic">Last updated:</span> <span class="bold">{{ lastUpdated }}</span></p>
+  <p class="stats-from">Stats from: <a href="https://www.cbssports.com/golf/leaderboard/pga-tour" class="link" target="_blank">cbssports.com/golf/leaderboard/pga-tour</a></p>
 </template>
 
 <script setup>
@@ -79,28 +80,28 @@ const error = ref(false);
 const errorMsg = ref(null);
 const lastUpdated = ref(null);
 
-const scores = computed(() => data.value);
+const scores = computed(() => data.value || []);
 
-const stats = computed(() => data.value[2]);
+const stats = computed(() => data.value?.[2] || []);
 
-const johnRound = computed(() => scores.value[0][0]);
-const overallFirst = computed(() => scores.value[1][0]);
+const roundFirst = computed(() => scores.value?.[0]?.[0] || {});
+const overallFirst = computed(() => scores.value?.[1]?.[0] || {});
 
-const alexRound = computed(() => scores.value[0][1]);
-const overallSecond = computed(() => scores.value[1][1]);
+const roundSecond = computed(() => scores.value?.[0]?.[1] || {});
+const overallSecond = computed(() => scores.value?.[1]?.[1] || {});
 
-const maxRound = computed(() => scores.value[0][2]);
-const overallThird = computed(() => scores.value[1][2]);
+const roundThird = computed(() => scores.value?.[0]?.[2] || {});
+const overallThird = computed(() => scores.value?.[1]?.[2] || {});
 
-const chrisRound = computed(() => scores.value[0][3]);
-const overallFourth = computed(() => scores.value[1][3]);
+const roundFourth = computed(() => scores.value?.[0]?.[3] || {});
+const overallFourth = computed(() => scores.value?.[1]?.[3] || {});
 
-const johnStats = computed(() => stats.value[0]);
-const alexStats = computed(() => stats.value[1]);
-const maxStats = computed(() => stats.value[2]);
-const chrisStats = computed(() => stats.value[3]);
+const johnStats = computed(() => stats.value?.[0] || []);
+const alexStats = computed(() => stats.value?.[1] || []);
+const maxStats = computed(() => stats.value?.[2] || []);
+const chrisStats = computed(() => stats.value?.[3] || []);
 
-const isInPlay = computed(() => data.value[3]);
+const isInPlay = computed(() => data.value?.[3] || false);
 // const isInPlay = computed(() => true);
 
 const round = ref(null);
@@ -136,7 +137,10 @@ async function getData() {
     // const response = await fetch('http://localhost:8888/scores');
     const response = await fetch('https://golf-scores-tracker-efba68d29894.herokuapp.com/scores');
     const result = await response.json();
-    data.value = result;
+
+    // Create a deep copy to avoid mutating the original response
+    data.value = JSON.parse(JSON.stringify(result));
+
     data.value.forEach((item, i) => {
       console.log('item:', item);
       if (i !== 2 && i !== 3) {
@@ -220,12 +224,27 @@ li {
   font-size: 18px;
   font-weight: 600;
 }
+.link {
+  color: #242424;
+  text-decoration: underline;
+  &:hover {
+    text-decoration: none;
+  }
+}
 .last-updated {
   position: absolute;
   top: 20px;
   right: 20px;
   font-size: 14px;
   margin: 0;
+}
+.stats-from {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 14px;
+  margin: 0 0 0 20px;
+  text-align: left;
 }
 .loading {
   font-size: 20px;
@@ -295,6 +314,9 @@ li {
 }
 
 @media (max-width: 670px) {
+  .logo-img {
+    margin-top: 30px;
+  }
   .scores {
     flex-direction: column;
   }
@@ -304,7 +326,8 @@ li {
     border-left: none;
     border-top: 1px solid gray;
   }
-  .last-updated {
+  .last-updated,
+  .stats-from {
     font-size: 12px;
   }
 }
