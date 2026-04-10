@@ -18,7 +18,7 @@
         <div class="round-overall-scores">
 
           <template v-if="isInPlay">
-            <h2 class="section-heading">ROUND {{ round }} SCORES:</h2>
+            <h2 class="section-heading">Round {{ round }} Scores:</h2>
             <ul>
               <li><span class="rank"><span>{{ johnRound.rank }}</span></span> {{ johnRound.name }}:&nbsp;<span :class="`score ${johnRound.class}`">{{ johnRound.score }}</span></li>
               <li><span class="rank"><span>{{ alexRound.rank }}</span></span> {{ alexRound.name }}:&nbsp;<span :class="`score ${alexRound.class}`">{{ alexRound.score }}</span></li>
@@ -28,7 +28,7 @@
             <hr>
           </template>
 
-          <h2 class="section-heading">OVERALL SCORES:</h2>
+          <h2 class="section-heading">Overall Scores:</h2>
           <ul>
             <li><span class="rank"><span>{{ overallFirst.rank }}</span></span> {{ overallFirst.name }}:&nbsp;<span :class="`score ${overallFirst.class}`">{{ overallFirst.score }}</span></li>
             <li><span class="rank"><span>{{ overallSecond.rank }}</span></span> {{ overallSecond.name }}:&nbsp;<span :class="`score ${overallSecond.class}`">{{ overallSecond.score }}</span></li>
@@ -39,7 +39,7 @@
 
         <template v-if="isInPlay">
           <div class="stats">
-            <h2 class="section-heading">TEAM ROUND TOP 4:</h2>
+            <h2 class="section-heading">Team Round Top 4:</h2>
             <h3 class="subheading">John:</h3>
             <ul>
               <li v-for="(item, index) in johnStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span></li>
@@ -193,6 +193,7 @@ $color-masters-green: #056948;
 .section-heading {
   font-family: 'Work Sans';
   font-weight: 700;
+  text-transform: uppercase;
   color: #555;
 }
 .subheading {
@@ -217,13 +218,13 @@ li {
   border-radius: 50%;
   margin-right: 10px;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 600;
 }
 .last-updated {
   position: absolute;
   top: 20px;
   right: 20px;
-  font-size: 12px;
+  font-size: 14px;
   margin: 0;
 }
 .loading {
@@ -298,6 +299,9 @@ li {
     padding: 30px 0 0;
     border-left: none;
     border-top: 1px solid gray;
+  }
+  .last-updated {
+    font-size: 12px;
   }
 }
 </style>

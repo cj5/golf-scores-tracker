@@ -141,8 +141,8 @@ async function getScores() {
       if (item.player === 'Rory McIlroy') chrisStats.push(stats[i]);
       if (item.player === 'Ludvig Åberg') chrisStats.push(stats[i]);
       if (item.player === 'Hideki Matsuyama') chrisStats.push(stats[i]);
-      if (item.player === 'Viktor Hovland') chrisStats.push(stats[i]);
-      // if (item.player === 'Chris Gotterup') chrisStats.push(stats[i]);
+      // if (item.player === 'Viktor Hovland') chrisStats.push(stats[i]);
+      if (item.player === 'Chris Gotterup') chrisStats.push(stats[i]);
       if (item.player === 'J.J. Spaun') chrisStats.push(stats[i]);
     });
 
