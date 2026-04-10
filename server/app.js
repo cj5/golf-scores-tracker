@@ -1,7 +1,21 @@
 import express from 'express';
 import puppeteer from 'puppeteer';
+import cors from 'cors';
 const app = express();
 const port = process.env.PORT || 8888;
+
+app.use(cors());
+
+// app.use(cors({
+//   origin: [
+//     'https://golf-scores-tracker-efba68d29894.herokuapp.com/scores',
+//     'http://golf-scores-tracker.chrisstack.co',
+//     'https://golf-scores-tracker.chrisstack.co',
+//     'http://localhost:8888',
+//   ]
+// }));
+
+app.options('*', cors());
 
 app.all('/*', function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
