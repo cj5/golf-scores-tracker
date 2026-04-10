@@ -21,6 +21,10 @@ h5 {
   margin: 0 0 20px;
 }
 
+.under-par {
+  color: rgb(186, 12, 47);
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -70,6 +74,7 @@ button:focus-visible {
 }
 
 #app {
+  min-width: 400px;
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;

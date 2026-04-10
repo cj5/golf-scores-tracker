@@ -1,30 +1,66 @@
 <template>
   <div>
-    <h1 class="title">Golf Scores Tracker</h1>
+    <img src="/masters-logo.png" class="logo-img" alt="Masters logo.">
+
+    <h1 class="title">Scores Tracker</h1>
+
     <h2 v-if="isLoading">Loading...</h2>
+
     <div v-if="error">
       <h2>⚠️ Error</h2>
       <p class="error">{{ errorMsg }}</p>
     </div>
+
     <div class="scores-wrap">
       <div v-if="scores" class="scores">
-        <template v-if="isInPlay">
-          <h2>ROUND 1 SCORES:</h2>
+
+        <div class="round-overall-scores">
+
+          <template v-if="isInPlay">
+            <h2>ROUND {{ round }} SCORES:</h2>
+            <ul>
+              <li><span class="rank"><span>{{ johnRound.rank }}</span></span> {{ johnRound.name }}:&nbsp;<span :class="`score ${johnRound.class}`">{{ johnRound.score }}</span></li>
+              <li><span class="rank"><span>{{ alexRound.rank }}</span></span> {{ alexRound.name }}:&nbsp;<span :class="`score ${alexRound.class}`">{{ alexRound.score }}</span></li>
+              <li><span class="rank"><span>{{ maxRound.rank }}</span></span> {{ maxRound.name }}:&nbsp;<span :class="`score ${maxRound.class}`">{{ maxRound.score }}</span></li>
+              <li><span class="rank"><span>{{ chrisRound.rank }}</span></span> {{ chrisRound.name }}:&nbsp;<span :class="`score ${chrisRound.class}`">{{ chrisRound.score }}</span></li>
+            </ul>
+            <hr>
+          </template>
+
+          <h2>OVERALL SCORES:</h2>
           <ul>
-            <li>({{ johnRound.rank }}) {{ johnRound.name }}: <span :class="`score ${johnRound.class}`">{{ johnRound.score }}</span></li>
-            <li>({{ alexRound.rank }}) {{ alexRound.name }}: <span :class="`score ${alexRound.class}`">{{ alexRound.score }}</span></li>
-            <li>({{ maxRound.rank }}) {{ maxRound.name }}: <span :class="`score ${maxRound.class}`">{{ maxRound.score }}</span></li>
-            <li>({{ chrisRound.rank }}) {{ chrisRound.name }}: <span :class="`score ${chrisRound.class}`">{{ chrisRound.score }}</span></li>
+            <li><span class="rank"><span>{{ overallFirst.rank }}</span></span> {{ overallFirst.name }}:&nbsp;<span :class="`score ${overallFirst.class}`">{{ overallFirst.score }}</span></li>
+            <li><span class="rank"><span>{{ overallSecond.rank }}</span></span> {{ overallSecond.name }}:&nbsp;<span :class="`score ${overallSecond.class}`">{{ overallSecond.score }}</span></li>
+            <li><span class="rank"><span>{{ overallThird.rank }}</span></span> {{ overallThird.name }}:&nbsp;<span :class="`score ${overallThird.class}`">{{ overallThird.score }}</span></li>
+            <li><span class="rank"><span>{{ overallFourth.rank }}</span></span> {{ overallFourth.name }}:&nbsp;<span :class="`score ${overallFourth.class}`">{{ overallFourth.score }}</span></li>
           </ul>
-          <p>————————————————</p>
+        </div>
+
+        <template v-if="isInPlay">
+          <div class="stats">
+            <h2>TEAM ROUND TOP 4:</h2>
+            <h3 class="subheading">John:</h3>
+            <ul>
+              <li v-for="(item, index) in johnStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span></li>
+            </ul>
+
+            <h3 class="subheading">Alex:</h3>
+            <ul>
+              <li v-for="(item, index) in alexStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span></li>
+            </ul>
+
+            <h3 class="subheading">Max:</h3>
+            <ul>
+              <li v-for="(item, index) in maxStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span></li>
+            </ul>
+
+            <h3 class="subheading">CJ:</h3>
+            <ul>
+              <li v-for="(item, index) in chrisStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span></li>
+            </ul>
+          </div>
         </template>
-        <h2>OVERALL SCORES:</h2>
-        <ul>
-          <li>({{ overallFirst.rank }}) {{ overallFirst.name }}: <span :class="`score ${overallFirst.class}`">{{ overallFirst.score }}</span></li>
-          <li>({{ overallSecond.rank }}) {{ overallSecond.name }}: <span :class="`score ${overallSecond.class}`">{{ overallSecond.score }}</span></li>
-          <li>({{ overallThird.rank }}) {{ overallThird.name }}: <span :class="`score ${overallThird.class}`">{{ overallThird.score }}</span></li>
-          <li>({{ overallFourth.rank }}) {{ overallFourth.name }}: <span :class="`score ${overallFourth.class}`">{{ overallFourth.score }}</span></li>
-        </ul>
+
       </div>
     </div>
   </div>
@@ -32,8 +68,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-// import * as cheerio from 'cheerio';
-// import puppeteer from 'puppeteer';
+import dayjs from 'dayjs';
 
 
 const data = ref(null);
@@ -42,6 +77,8 @@ const error = ref(false);
 const errorMsg = ref(null);
 
 const scores = computed(() => data.value);
+
+const stats = computed(() => data.value[2]);
 
 const johnRound = computed(() => scores.value[0][0]);
 const overallFirst = computed(() => scores.value[1][0]);
@@ -55,17 +92,51 @@ const overallThird = computed(() => scores.value[1][2]);
 const chrisRound = computed(() => scores.value[0][3]);
 const overallFourth = computed(() => scores.value[1][3]);
 
-const isInPlay = computed(() => data[2]);
+const johnStats = computed(() => stats.value[0]);
+const alexStats = computed(() => stats.value[1]);
+const maxStats = computed(() => stats.value[2]);
+const chrisStats = computed(() => stats.value[3]);
+
+const isInPlay = computed(() => data[3]);
+// const isInPlay = computed(() => true);
+
+const round = ref(null);
+
+function setRound() {
+  const month = dayjs().format('M')
+  const day = dayjs().format('D')
+  if (month == 4) {
+    if (day == 9) {
+      round.value = 1;
+    } else if (day == 10) {
+      round.value = 2;
+    } else if (day == 11) {
+      round.value = 3;
+    } else if (day == 12) {
+      round.value = 4;
+    }
+  }
+}
+
+function formatScore(score) {
+  if (score < 0) {
+    return `<span class="under-par">${score}</span>`;
+  } if (score === 0) {
+    return 'E';
+  } else if (score > 0) {
+    return `+${score}`;
+  }
+}
 
 async function getData() {
   try {
-    // const response = await fetch('http://localhost:8888/scores');
-    const response = await fetch('https://golf-scores-tracker-efba68d29894.herokuapp.com/scores');
+    const response = await fetch('http://localhost:8888/scores');
+    // const response = await fetch('https://golf-scores-tracker-efba68d29894.herokuapp.com/scores');
     const result = await response.json();
     data.value = result;
     data.value.forEach((item, i) => {
       console.log('item:', item);
-      if (i !== 2) {
+      if (i !== 2 && i !== 3) {
         item.forEach((player, j) => {
           console.log('player:', player);
           if (player.score > 0) {
@@ -88,22 +159,49 @@ async function getData() {
 
 onMounted(() => {
   getData();
+  setRound();
 });
 </script>
 
 <style lang="scss" scoped>
+@use "sass:color";
+
+$color-red: rgb(186, 12, 47);
+$color-green: rgb(0, 103, 71);
+
+.logo-img {
+  width: 150px;
+}
 .title {
-  font-size: 2.5em;
-  font-weight: 300;
-  margin-bottom: 40px;
+  font-size: 1.25em;
+  font-weight: 400;
+  font-style: italic;
+  color: #32a84a;
+  margin-bottom: 60px;
+}
+.subheading {
+  font-size: 24px;
 }
 ul {
-  margin-right: 0;
-  padding-left: 0;
+  margin: 0;
+  padding-left: 10px;
   list-style: none;
 }
 li {
-  font-size: 22px;
+  font-size: 30px;
+}
+.rank {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  background-color: color.scale(#fce300, $lightness: 80%);
+  color: #056948;
+  border-radius: 50%;
+  margin-right: 10px;
+  font-size: 18px;
+  font-weight: bold;
 }
 .scores-wrap {
   display: flex;
@@ -111,16 +209,63 @@ li {
   text-align: left;
 }
 .scores {
+  display: flex;
   width: max-content;
 }
 .score {
   font-weight: bold;
-  color: rgb(0, 103, 71);
+  color: $color-green;
   &.under-par {
-    color: rgb(186, 12, 47);
+    color: $color-red;
+  }
+}
+.round-overall-scores {
+  li {
+    display: flex;
+    align-items: center;
+  }
+  hr {
+    margin: 40px 0;
+  }
+}
+.stats {
+  margin-left: 80px;
+  padding-left: 30px;
+  border-left: 1px solid gray;
+  .subheading {
+    font-size: 18px;
+    margin-bottom: 9px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid gray;
+  }
+  .rank {
+    width: 15px;
+    height: 15px;
+    font-size: 12px;
+    margin-right: 6px;
+  }
+  ul {
+    margin: 0 0 30px;
+  }
+  li {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
   }
 }
 .error {
-  color: rgb(186, 12, 47);
+  color: $color-red;
+}
+
+@media (max-width: 670px) {
+  .scores {
+    flex-direction: column;
+  }
+  .stats {
+    margin: 100px 0 0;
+    padding: 30px 0 0;
+    border-left: none;
+    border-top: 1px solid gray;
+  }
 }
 </style>

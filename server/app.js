@@ -429,7 +429,7 @@ app.get('/stats', (req, res) => {
 });
 
 app.get('/scores', (req, res) => {
-  res.send([roundScores, overallScores, isInPlay]);
+  res.send([roundScores, overallScores, stats, isInPlay]);
 });
 
 app.listen(port, () => {
