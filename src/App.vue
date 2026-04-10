@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <img src="/masters-logo.png" class="logo-img" alt="Masters logo.">
 
     <h1 class="title">Scores Tracker</h1>
@@ -17,7 +18,7 @@
         <div class="round-overall-scores">
 
           <template v-if="isInPlay">
-            <h2>ROUND {{ round }} SCORES:</h2>
+            <h2 class="section-heading">ROUND {{ round }} SCORES:</h2>
             <ul>
               <li><span class="rank"><span>{{ johnRound.rank }}</span></span> {{ johnRound.name }}:&nbsp;<span :class="`score ${johnRound.class}`">{{ johnRound.score }}</span></li>
               <li><span class="rank"><span>{{ alexRound.rank }}</span></span> {{ alexRound.name }}:&nbsp;<span :class="`score ${alexRound.class}`">{{ alexRound.score }}</span></li>
@@ -27,7 +28,7 @@
             <hr>
           </template>
 
-          <h2>OVERALL SCORES:</h2>
+          <h2 class="section-heading">OVERALL SCORES:</h2>
           <ul>
             <li><span class="rank"><span>{{ overallFirst.rank }}</span></span> {{ overallFirst.name }}:&nbsp;<span :class="`score ${overallFirst.class}`">{{ overallFirst.score }}</span></li>
             <li><span class="rank"><span>{{ overallSecond.rank }}</span></span> {{ overallSecond.name }}:&nbsp;<span :class="`score ${overallSecond.class}`">{{ overallSecond.score }}</span></li>
@@ -38,7 +39,7 @@
 
         <template v-if="isInPlay">
           <div class="stats">
-            <h2>TEAM ROUND TOP 4:</h2>
+            <h2 class="section-heading">TEAM ROUND TOP 4:</h2>
             <h3 class="subheading">John:</h3>
             <ul>
               <li v-for="(item, index) in johnStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span></li>
@@ -64,6 +65,7 @@
       </div>
     </div>
   </div>
+  <p class="last-updated" v-if="lastUpdated"><span class="italic">Last updated:</span> <span class="bold">{{ lastUpdated }}</span></p>
 </template>
 
 <script setup>
@@ -75,6 +77,7 @@ const data = ref(null);
 const isLoading = ref(true);
 const error = ref(false);
 const errorMsg = ref(null);
+const lastUpdated = ref(null);
 
 const scores = computed(() => data.value);
 
@@ -97,8 +100,8 @@ const alexStats = computed(() => stats.value[1]);
 const maxStats = computed(() => stats.value[2]);
 const chrisStats = computed(() => stats.value[3]);
 
-const isInPlay = computed(() => data[3]);
-// const isInPlay = computed(() => true);
+// const isInPlay = computed(() => data[3]);
+const isInPlay = computed(() => true);
 
 const round = ref(null);
 
@@ -130,8 +133,8 @@ function formatScore(score) {
 
 async function getData() {
   try {
-    const response = await fetch('http://localhost:8888/scores');
-    // const response = await fetch('https://golf-scores-tracker-efba68d29894.herokuapp.com/scores');
+    // const response = await fetch('http://localhost:8888/scores');
+    const response = await fetch('https://golf-scores-tracker-efba68d29894.herokuapp.com/scores');
     const result = await response.json();
     data.value = result;
     data.value.forEach((item, i) => {
@@ -146,6 +149,8 @@ async function getData() {
           }
         });
       }
+      const currentTime = dayjs().format('h:mm:ss A');
+      lastUpdated.value = currentTime;
     });
     console.log('Data:', data.value);
   } catch (err) {
@@ -160,6 +165,11 @@ async function getData() {
 onMounted(() => {
   getData();
   setRound();
+
+  setInterval(() => {
+    getData();
+    setRound();
+  }, 60000);
 });
 </script>
 
@@ -168,16 +178,21 @@ onMounted(() => {
 
 $color-red: rgb(186, 12, 47);
 $color-green: rgb(0, 103, 71);
+$color-masters-green: #056948;
 
 .logo-img {
   width: 150px;
 }
 .title {
-  font-size: 1.25em;
+  font-size: 1em;
   font-weight: 400;
   font-style: italic;
   color: #32a84a;
   margin-bottom: 60px;
+}
+.section-heading {
+  color: #555;
+  font-weight: 500;
 }
 .subheading {
   font-size: 24px;
@@ -197,11 +212,18 @@ li {
   width: 25px;
   height: 25px;
   background-color: color.scale(#fce300, $lightness: 80%);
-  color: #056948;
+  color: $color-masters-green;
   border-radius: 50%;
   margin-right: 10px;
   font-size: 18px;
   font-weight: bold;
+}
+.last-updated {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 12px;
+  margin: 0;
 }
 .scores-wrap {
   display: flex;
@@ -233,7 +255,9 @@ li {
   padding-left: 30px;
   border-left: 1px solid gray;
   .subheading {
-    font-size: 18px;
+    font-size: 1em;
+    font-style: italic;
+    color: #555;
     margin-bottom: 9px;
     padding-bottom: 3px;
     border-bottom: 1px solid gray;
