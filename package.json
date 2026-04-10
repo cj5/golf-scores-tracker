@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "serve": "nodemon server/app.js",
-        "start": "node server/app.js",
+        "start": "npx puppeteer browsers install chrome && node server/app.js",
         "dev": "vite"
     },
     "dependencies": {
