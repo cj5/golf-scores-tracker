@@ -5,11 +5,12 @@
     "type": "module",
     "scripts": {
         "serve": "nodemon server/app.js",
-        "start": "npx puppeteer browsers install chrome && node server/app.js",
+        "start": "rm -rf ~/.cache/puppeteer/chrome && npx puppeteer browsers install chrome && node server/app.js",
         "dev": "vite",
         "build": "vite build"
     },
     "dependencies": {
+        "cors": "^2.8.6",
         "express": "^4.19.2",
         "puppeteer": "^22.6.4",
         "vue": "^3.4.21"
