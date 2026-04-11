@@ -276,7 +276,8 @@ async function getScores() {
         }
 
         // Only consider players with valid scores for high score calculation
-        if (y.score !== null && y.score !== '-' && y.score > (processedStats[i][highScoreIndex]?.score || -Infinity)) {
+        // if (y.score !== null && y.score !== '-' && y.score > (processedStats[i][highScoreIndex]?.score || -Infinity)) {
+        if (y.score > stats[i][highScoreIndex].score) {
           highScoreIndex = j;
         }
         prevHighScore = y.score;
