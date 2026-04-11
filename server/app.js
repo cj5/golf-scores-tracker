@@ -171,7 +171,7 @@ async function getScores() {
       // if (item.player === 'J.J. Spaun') chrisStats.push(freshStats[i]);
     });
 
-    console.log('freshStats', freshStats);
+    // console.log('freshStats', freshStats);
 
     const totalScores = [
       { // Round 1
@@ -424,6 +424,8 @@ async function getScores() {
       });
     });
 
+    console.log('ROUND SCORES:', roundScores);
+
     console.log('———————————————');
     console.log('OVERALL SCORES:');
 
@@ -444,6 +446,8 @@ async function getScores() {
         class: item.score < 0 ? 'under-par' : '',
       })
     });
+
+    console.log('OVERALL SCORES:', overallScores);
 
     console.log('———————————————\n\n');
 
