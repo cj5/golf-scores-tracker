@@ -45,9 +45,12 @@ async function getScores() {
 
     // Launch the browser and open a new blank page
     const browser = await puppeteer.launch({
+      headless: "new",
+      protocolTimeout: 60000,
       args: [
         '--no-sandbox',
         '--disable-features=FedCm',
+        '--disable-gpu',
       ],
     });
     const page = await browser.newPage();
@@ -160,10 +163,10 @@ async function getScores() {
         alex: 7,
       },
       { // Round 2
-        john: 0,
-        chris: 0,
-        max: 0,
-        alex: 0,
+        john: -9,
+        chris: -13,
+        max: 1,
+        alex: -8,
       },
       { // Round 3
         john: 0,
@@ -178,6 +181,8 @@ async function getScores() {
         alex: 0,
       },
     ];
+
+    const ROUND_INDEX = 2; // round 1 = 0, round 2 = 1, etc.
 
     stats = [
       johnStats,
@@ -267,7 +272,6 @@ async function getScores() {
     });
 
     // console.log('stats -- high score removed:', processedStats);
-    const roundIndex = 1; // round 1 = 0, round 2 = 1, etc.
 
     processedStats.forEach((x, i) => {
       x.forEach((y, j) => {
@@ -280,16 +284,16 @@ async function getScores() {
 
         if (i === 0) {
           johnTotal_rd += y.score;
-          totalScores[roundIndex].john += y.score;
+          totalScores[ROUND_INDEX].john += y.score;
         } else if (i === 1) {
           alexTotal_rd += y.score;
-          totalScores[roundIndex].alex += y.score;
+          totalScores[ROUND_INDEX].alex += y.score;
         } else if (i === 2) {
           maxTotal_rd += y.score;
-          totalScores[roundIndex].max += y.score;
+          totalScores[ROUND_INDEX].max += y.score;
         } else if (i === 3) {
           chrisTotal_rd += y.score;
-          totalScores[roundIndex].chris += y.score;
+          totalScores[ROUND_INDEX].chris += y.score;
         }
       });
     });
