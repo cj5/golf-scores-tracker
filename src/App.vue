@@ -7,12 +7,12 @@
 
     <p v-if="isLoading" class="loading">Loading...</p>
 
-    <div v-if="error" class="error-wrap">
+    <div v-if="error || !overallFirst.name" class="error-wrap">
       <h2 class="heading mb-0">⚠️ Error</h2>
-      <p class="error">{{ errorMsg }}</p>
+      <p class="error">Check back soon</p>
     </div>
 
-    <div class="scores-wrap">
+    <div v-if="!error && overallFirst.name" class="scores-wrap">
       <div v-if="scores" class="scores">
 
         <div class="round-overall-scores">
@@ -77,7 +77,6 @@ import dayjs from 'dayjs';
 const data = ref(null);
 const isLoading = ref(true);
 const error = ref(false);
-const errorMsg = ref(null);
 const lastUpdated = ref(null);
 
 const scores = computed(() => data.value || []);
@@ -168,7 +167,6 @@ async function getData() {
   } catch (err) {
     console.error('Fetch failed:', err);
     error.value = true;
-    errorMsg.value = err;
   } finally {
     isLoading.value = false;
   }
@@ -181,7 +179,7 @@ onMounted(() => {
   setInterval(() => {
     getData();
     setRound();
-  }, 60000);
+  }, 15000);
 });
 </script>
 
