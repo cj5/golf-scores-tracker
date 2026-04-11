@@ -135,7 +135,7 @@ async function getScores() {
       if (item.player === 'Tommy Fleetwood') alexStats.push(freshStats[i]);
       if (item.player === 'Matt Fitzpatrick') alexStats.push(freshStats[i]);
       if (item.player === 'Jordan Spieth') alexStats.push(freshStats[i]);
-      if (item.player === 'Min Woo Lee') alexStats.push(freshStats[i]);
+      // if (item.player === 'Min Woo Lee') alexStats.push(freshStats[i]);
       // if (item.player === 'Robert MacIntyre') alexStats.push(stats[i]);
 
       // MAX
