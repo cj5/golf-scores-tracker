@@ -36,6 +36,14 @@ h5 {
   margin-bottom: 0;
 }
 
+.fz-2xs {
+  font-size: 14px;
+}
+
+.fz-3xs {
+  font-size: 12px;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

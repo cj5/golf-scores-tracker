@@ -62,10 +62,15 @@ async function getScores() {
     const scores = await page.$$eval(
       '.TableBase-bodyTd.TableBase-bodyTd--number.GolfLeaderboardTable-bodyTd--today',
       els => els.map((el) => el.innerText)
-    )
+    );
+
+    const thru = await page.$$eval(
+      '.TableBase-bodyTr.GolfLeaderboard-bodyTr.GolfLeaderboard-toggleScorecard--open td:nth-of-type(6)',
+      els => els.map((el) => el.innerText)
+    );
 
     isInPlay = scores.length ? true : false;
-    console.log('isInPlay:', isInPlay);
+    // console.log('isInPlay:', isInPlay);
 
     // let scores_1 = await page.$$eval(
     //   '.TableBase-bodyTr.GolfLeaderboard-bodyTr.GolfLeaderboard-toggleScorecard--open .TableBase-bodyTd.TableBase-bodyTd--number',
@@ -107,8 +112,11 @@ async function getScores() {
       freshStats.push({ player: item });
     });
     scores.forEach((item, i) => {
-      console.log(freshStats[i]);
+      // console.log(freshStats[i]);
       freshStats[i].score = item;
+    });
+    thru.forEach((item, i) => {
+      freshStats[i].thru = item;
     });
 
     // console.log('scores:', scores);
@@ -154,6 +162,8 @@ async function getScores() {
       if (item.player === 'Chris Gotterup') chrisStats.push(freshStats[i]);
       // if (item.player === 'J.J. Spaun') chrisStats.push(freshStats[i]);
     });
+
+    console.log('freshStats', freshStats);
 
     const totalScores = [
       { // Round 1
@@ -275,7 +285,7 @@ async function getScores() {
 
     processedStats.forEach((x, i) => {
       x.forEach((y, j) => {
-        console.log('y:', y);
+        // console.log('y:', y);
         // Skip players who haven't started (null scores or '-' string)
         if (y.score === null || y.score === '-') {
           console.log(`Skipping ${y.player} - hasn't started`);
@@ -399,6 +409,7 @@ async function getScores() {
         rank,
         name: item.name,
         score: item.score,
+        thru: item.thru,
         class: item.score < 0 ? 'under-par' : '',
       });
     });

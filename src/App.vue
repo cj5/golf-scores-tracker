@@ -42,22 +42,22 @@
             <h2 class="section-heading">Team Round Top 4:</h2>
             <h3 class="subheading">John:</h3>
             <ul>
-              <li v-for="(item, index) in johnStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span></li>
+              <li v-for="(item, index) in johnStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span>&nbsp;<span class="fz-2xs">({{ item.thru }})</span></li>
             </ul>
 
             <h3 class="subheading">Alex:</h3>
             <ul>
-              <li v-for="(item, index) in alexStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span></li>
+              <li v-for="(item, index) in alexStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span>&nbsp;<span class="fz-2xs">({{ item.thru }})</span></li>
             </ul>
 
             <h3 class="subheading">Max:</h3>
             <ul>
-              <li v-for="(item, index) in maxStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span></li>
+              <li v-for="(item, index) in maxStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span>&nbsp;<span class="fz-2xs">({{ item.thru }})</span></li>
             </ul>
 
             <h3 class="subheading">CJ:</h3>
             <ul>
-              <li v-for="(item, index) in chrisStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span></li>
+              <li v-for="(item, index) in chrisStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span>&nbsp;<span class="fz-2xs">({{ item.thru }})</span></li>
             </ul>
           </div>
         </template>
@@ -134,8 +134,8 @@ function formatScore(score) {
 
 async function getData() {
   try {
-    // const response = await fetch('http://localhost:8888/scores');
-    const response = await fetch('https://golf-scores-tracker-efba68d29894.herokuapp.com/scores');
+    const response = await fetch('http://localhost:8888/scores');
+    // const response = await fetch('https://golf-scores-tracker-efba68d29894.herokuapp.com/scores');
     const result = await response.json();
 
     // Create a deep copy to avoid mutating the original response
