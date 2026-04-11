@@ -142,8 +142,8 @@ function displayThru(item) {
 
 async function getData() {
   try {
-    const response = await fetch('http://localhost:8888/scores');
-    // const response = await fetch('https://golf-scores-tracker-efba68d29894.herokuapp.com/scores');
+    // const response = await fetch('http://localhost:8888/scores');
+    const response = await fetch('https://golf-scores-tracker-efba68d29894.herokuapp.com/scores');
     const result = await response.json();
 
     // Create a deep copy to avoid mutating the original response
