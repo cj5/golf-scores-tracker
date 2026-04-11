@@ -139,10 +139,10 @@ async function getScores() {
       // if (item.player === 'Robert MacIntyre') alexStats.push(stats[i]);
 
       // MAX
-      if (item.player === 'Bryson DeChambeau') maxStats.push(freshStats[i]);
+      // if (item.player === 'Bryson DeChambeau') maxStats.push(freshStats[i]);
       if (item.player === 'Xander Schauffele') maxStats.push(freshStats[i]);
       if (item.player === 'Brooks Koepka') maxStats.push(freshStats[i]);
-      // if (item.player === 'Collin Morikawa') maxStats.push(freshStats[i]);
+      if (item.player === 'Collin Morikawa') maxStats.push(freshStats[i]);
       if (item.player === 'Adam Scott') maxStats.push(freshStats[i]);
       if (item.player === 'Gary Woodland') maxStats.push(freshStats[i]);
 
@@ -150,9 +150,9 @@ async function getScores() {
       if (item.player === 'Rory McIlroy') chrisStats.push(freshStats[i]);
       if (item.player === 'Ludvig Åberg') chrisStats.push(freshStats[i]);
       if (item.player === 'Hideki Matsuyama') chrisStats.push(freshStats[i]);
-      // if (item.player === 'Viktor Hovland') chrisStats.push(freshStats[i]);
+      if (item.player === 'Viktor Hovland') chrisStats.push(freshStats[i]);
       if (item.player === 'Chris Gotterup') chrisStats.push(freshStats[i]);
-      if (item.player === 'J.J. Spaun') chrisStats.push(freshStats[i]);
+      // if (item.player === 'J.J. Spaun') chrisStats.push(freshStats[i]);
     });
 
     const totalScores = [
