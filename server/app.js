@@ -69,6 +69,11 @@ async function getScores() {
       els => els.map((el) => el.innerText)
     );
 
+    const teeTime = await page.$$eval(
+      '.TableBase-bodyTd.TableBase-bodyTd--number.GolfLeaderboardTable-bodyTd--today',
+      els => els.map((el) => el.innerText)
+    );
+
     isInPlay = scores.length ? true : false;
     // console.log('isInPlay:', isInPlay);
 
@@ -117,6 +122,9 @@ async function getScores() {
     });
     thru.forEach((item, i) => {
       freshStats[i].thru = item;
+    });
+    teeTime.forEach((item, i) => {
+      freshStats[i].teeTime = item;
     });
 
     // console.log('scores:', scores);
@@ -410,6 +418,7 @@ async function getScores() {
         name: item.name,
         score: item.score,
         thru: item.thru,
+        teeTime: item.teeTime,
         class: item.score < 0 ? 'under-par' : '',
       });
     });

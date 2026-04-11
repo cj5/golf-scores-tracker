@@ -42,22 +42,22 @@
             <h2 class="section-heading">Team Round Top 4:</h2>
             <h3 class="subheading">John:</h3>
             <ul>
-              <li v-for="(item, index) in johnStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span>&nbsp;<span class="fz-2xs">({{ item.thru }})</span></li>
+              <li v-for="(item, index) in johnStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span>&nbsp;&nbsp;<span class="thru">{{ displayThru(item) }}</span></li>
             </ul>
 
             <h3 class="subheading">Alex:</h3>
             <ul>
-              <li v-for="(item, index) in alexStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span>&nbsp;<span class="fz-2xs">({{ item.thru }})</span></li>
+              <li v-for="(item, index) in alexStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span>&nbsp;&nbsp;<span class="thru">{{ displayThru(item) }}</span></li>
             </ul>
 
             <h3 class="subheading">Max:</h3>
             <ul>
-              <li v-for="(item, index) in maxStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span>&nbsp;<span class="fz-2xs">({{ item.thru }})</span></li>
+              <li v-for="(item, index) in maxStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span>&nbsp;&nbsp;<span class="thru">{{ displayThru(item) }}</span></li>
             </ul>
 
             <h3 class="subheading">CJ:</h3>
             <ul>
-              <li v-for="(item, index) in chrisStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span>&nbsp;<span class="fz-2xs">({{ item.thru }})</span></li>
+              <li v-for="(item, index) in chrisStats" :key="index"><span class="rank"><span>{{ index+1 }}</span></span> {{ item.player }}:&nbsp;<span class="score" v-html="formatScore(item.score)"></span>&nbsp;&nbsp;<span class="thru">{{ displayThru(item) }}</span></li>
             </ul>
           </div>
         </template>
@@ -129,6 +129,14 @@ function formatScore(score) {
     return 'E';
   } else if (score > 0) {
     return `+${score}`;
+  }
+}
+
+function displayThru(item) {
+  if (item.thru === '-') {
+    return item.teeTime;
+  } else {
+    return item.thru;
   }
 }
 
@@ -230,6 +238,12 @@ li {
   &:hover {
     text-decoration: none;
   }
+}
+.thru {
+  font-size: 12px;
+  color: #555;
+  border-left: 1px solid #aaa;
+  padding-left: 5px;
 }
 .last-updated {
   position: absolute;
