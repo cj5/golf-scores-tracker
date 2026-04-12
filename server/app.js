@@ -200,7 +200,7 @@ async function getScores() {
       },
     ];
 
-    const ROUND_INDEX = 2; // round 1 = 0, round 2 = 1, etc.
+    const ROUND_INDEX = 3; // round 1 = 0, round 2 = 1, etc.
 
     stats = [
       johnStats,
