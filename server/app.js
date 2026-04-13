@@ -193,10 +193,10 @@ async function getScores() {
         alex: -2,
       },
       { // Round 4
-        john: 0,
-        chris: 0,
-        max: 0,
-        alex: 0,
+        john: -4,
+        chris: -9,
+        max: -16,
+        alex: -8,
       },
     ];
 
